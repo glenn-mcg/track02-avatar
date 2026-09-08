@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "age_band": "36-45",
+  "presentation": "casual",
+  "skin_tone": "light",
+  "hair": {
+    "style": "medium length",
+    "color": "brown"
+  },
+  "attire": "casual shirt",
+  "background": "outdoor urban environment",
+  "pose": "three quarter portrait",
+  "geographic_context": null,
+  "reference_images": []
+}

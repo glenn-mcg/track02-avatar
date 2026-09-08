@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# IDE
+.vscode/
+.idea/
+
+# Environment variables
+.env
+
+# Generated jobs
+jobs/*
+!jobs/.gitkeep
+
+# Generated outputs
+outputs/*
+
+# Model files
+*.safetensors
+*.ckpt
+*.pth
+*.pt
+models/
+
+# Python packaging
+*.egg-info/
+dist/
+build/
+
+# Test/cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# OS
+.DS_Store
+Thumbs.db

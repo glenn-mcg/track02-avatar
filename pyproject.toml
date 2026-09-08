@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "track02-avatar"
+version = "0.1.0"
+description = "IncuBrix Software Engineer Assessment - Track 02"
+requires-python = ">=3.11"
+dependencies = [
+    "pydantic>=2.7,<3",
+    "typer>=0.12,<1",
+    "pyyaml>=6.0,<7",
+    "pillow>=10.0,<12",
+    "numpy>=1.26,<3",
+]
+
+[project.scripts]
+avatar = "avatar_system.cli.main:app"
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
