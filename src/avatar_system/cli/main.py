@@ -7,6 +7,7 @@ from avatar_system.orchestration.orchestrator import Orchestrator
 from avatar_system.generation.local import LocalGenerator
 from avatar_system.jobs.manager import JobManager
 from avatar_system.orchestration.generation import GenerationOrchestrator
+from avatar_system.generation.kaggle import KaggleGenerator
 
 import typer
 from pydantic import ValidationError
@@ -112,7 +113,7 @@ def generate(
         typer.echo(f"ERROR: {exc}")
         raise typer.Exit(code=1)
 
-    generator = LocalGenerator()
+    generator = KaggleGenerator()
 
     orchestrator = GenerationOrchestrator(
         generator=generator
