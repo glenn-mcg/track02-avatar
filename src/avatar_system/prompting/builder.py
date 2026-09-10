@@ -9,30 +9,22 @@ class PromptBuilder:
 
     def build(self, spec: AvatarSpec) -> str:
         parts = [
-            "Professional adult avatar portrait.",
-            f"Age range: {spec.age_band}.",
-            f"Presentation: {spec.presentation}.",
-            f"Skin tone: {spec.skin_tone}.",
-            f"Hair: {spec.hair.style}, {spec.hair.color}.",
-            f"Attire: {spec.attire}.",
-            f"Background: {spec.background}.",
-            f"Pose: {spec.pose}.",
+            "A professional studio portrait of a fictional adult person,",
+            f"age {spec.age_band},",
+            "front-facing, natural expression,",
+            f"{spec.hair.style} {spec.hair.color} hair,",
+            f"{spec.attire},",
+            "neutral professional background,",
+            "realistic photography,",
+            "soft studio lighting,",
+            "high detail",
         ]
-
-        if spec.geographic_context:
-            parts.append(
-                f"Geographic context: {spec.geographic_context}."
-            )
-
-        parts.append(
-            "High quality, natural appearance, "
-            "realistic proportions, consistent facial structure."
-        )
 
         return " ".join(parts)
 
     def build_negative_prompt(self, spec: AvatarSpec) -> str:
         return (
-            "blurry, distorted, low quality, malformed anatomy, "
-            "extra limbs, duplicate features, text, watermark"
+            "blurry, distorted face, deformed, extra fingers, "
+            "extra limbs, low quality, duplicate person, "
+            "text, watermark, logo"
         )

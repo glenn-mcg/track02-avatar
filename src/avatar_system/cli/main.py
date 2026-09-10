@@ -4,6 +4,9 @@ from avatar_system.jobs.manager import JobManager
 from avatar_system.schemas.generation import GenerationSpec
 from avatar_system.schemas.job import GenerationJob, JobBackend
 from avatar_system.orchestration.orchestrator import Orchestrator
+from avatar_system.generation.local import LocalGenerator
+from avatar_system.jobs.manager import JobManager
+from avatar_system.orchestration.generation import GenerationOrchestrator
 
 import typer
 from pydantic import ValidationError
@@ -54,8 +57,14 @@ def prepare(
 
     generation_spec = GenerationSpec()
 
+    generation_spec = GenerationSpec()
+
+    manager = JobManager()
+
+    job_id = manager.next_job_id()
+
     job = GenerationJob(
-        job_id="job_001",
+        job_id=job_id,
         avatar_spec=avatar_spec,
         generation_spec=generation_spec,
         backend=JobBackend.LOCAL,
@@ -67,8 +76,6 @@ def prepare(
     except ValueError as exc:
         typer.echo(f"ERROR: {exc}")
         raise typer.Exit(code=1)
-
-    manager = JobManager()
     job_file = manager.save(job)
 
     typer.echo("Specification is valid.")
@@ -86,20 +93,53 @@ def generate(
         None,
         "--job",
         "-j",
-        help="Generation job ID or job path.",
-    ),
-    backend: str = typer.Option(
-        "local",
-        "--backend",
-        "-b",
-        help="Generation backend.",
+        help="Generation job ID.",
     ),
 ):
     """
     Generate an avatar from a prepared job.
     """
-    print("WORKING: generate")
 
+    if job is None:
+        typer.echo("ERROR: --job is required.")
+        raise typer.Exit(code=1)
+
+    manager = JobManager()
+
+    try:
+        generation_job = manager.load(job)
+    except FileNotFoundError as exc:
+        typer.echo(f"ERROR: {exc}")
+        raise typer.Exit(code=1)
+
+    generator = LocalGenerator()
+
+    orchestrator = GenerationOrchestrator(
+        generator=generator
+    )
+
+    try:
+        result = orchestrator.execute(
+            generation_job
+        )
+    except Exception as exc:
+        typer.echo(
+            f"ERROR: Generation failed: {exc}"
+        )
+        raise typer.Exit(code=1)
+
+    if not result.success:
+        typer.echo(
+            f"ERROR: Generation failed: "
+            f"{result.error_message}"
+        )
+        raise typer.Exit(code=1)
+
+    typer.echo("Generation completed.")
+    typer.echo(f"Backend: {result.backend}")
+    typer.echo(f"Model: {result.model_name}")
+    typer.echo(f"Seed: {result.seed}")
+    typer.echo(f"Output: {result.output_path}")
 
 @app.command()
 def validate(

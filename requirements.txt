@@ -4,3 +4,10 @@ pyyaml>=6.0,<7
 pillow>=10.0,<12
 numpy>=1.26,<3
 pytest>=8.0,<9
+diffusers==0.35.2
+transformers==4.56.2
+accelerate>=1.10.0,<2.0.0
+safetensors>=0.6.0,<1.0.0
+torch>=2.6.0
+torchvision>=0.21.0
+kaggle>=2.2.4

@@ -1,0 +1,10 @@
+{
+    "title": "Avatar Generation Job",
+    "id": "glennmcgrath/avatar-generation-job",
+    "licenses": [
+        {
+            "name": "CC0-1.0"
+        }
+    ],
+    "description": "Input generation job for the Track 02 avatar generation system."
+}

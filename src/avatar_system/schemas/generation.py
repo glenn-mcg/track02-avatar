@@ -35,7 +35,7 @@ class GenerationSpec(BaseModel):
     )
 
     guidance_scale: float = Field(
-        default=7.5,
+        default=7.0,
         ge=0.0,
         le=30.0,
     )

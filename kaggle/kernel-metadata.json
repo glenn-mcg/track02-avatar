@@ -1,0 +1,17 @@
+{
+    "id": "glennmcgrath/track-02-avatar-generation-worker",
+    "title": "Track 02 Avatar Generation Worker",
+    "code_file": "generate.py",
+    "language": "python",
+    "kernel_type": "script",
+    "is_private": "true",
+    "enable_gpu": "true",
+    "enable_internet": "true",
+    "machine_shape": "NvidiaTeslaT4",
+    "dataset_sources": [
+        "glennmcgrath/avatar-generation-job"
+    ],
+    "competition_sources": [],
+    "kernel_sources": [],
+    "model_sources": []
+}
