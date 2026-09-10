@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "age_band": "25-30",
+  "presentation": "casual",
+  "skin_tone": "dark",
+  "hair": {
+    "style": "short",
+    "color": "black"
+  },
+  "attire": "casual shirt",
+  "background": "office",
+  "pose": "three quarter portrait",
+  "geographic_context": "asian",
+  "reference_images": []
+}

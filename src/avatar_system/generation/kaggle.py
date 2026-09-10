@@ -7,7 +7,9 @@ from pathlib import Path
 from avatar_system.generation.base import GenerationAdapter
 from avatar_system.generation.result import GenerationResult
 from avatar_system.schemas.job import GenerationJob
-
+from avatar_system.generation.manifest import (
+    ManifestBuilder,
+)
 
 class KaggleGenerator(GenerationAdapter):
     """
@@ -174,16 +176,34 @@ class KaggleGenerator(GenerationAdapter):
         # 10. Return project's GenerationResult
         # --------------------------------------------------
 
-        return GenerationResult(
-            success=True,
-            output_path=image_paths[0],
-            output_paths=image_paths,
-            seed=result_data.get("seed"),
-            model_name=result_data.get(
-                "model_name"
-            ),
-            backend="kaggle",
+        generation_result = GenerationResult(
+    success=True,
+    output_path=image_paths[0],
+    output_paths=image_paths,
+    seed=result_data.get("seed"),
+    model_name=result_data.get(
+        "model_name"
+    ),
+    backend="kaggle",
+)
+
+        manifest_builder = ManifestBuilder()
+
+        manifest = manifest_builder.build(
+            job=job,
+            result=generation_result,
         )
+
+        manifest_file = manifest_builder.save(
+            manifest=manifest,
+            output_directory=avatar_output_directory,
+        )
+
+        print(
+            f"Manifest: {manifest_file}"
+        )
+
+        return generation_result
 
     # ======================================================
     # DATASET

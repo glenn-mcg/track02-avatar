@@ -1,20 +1,20 @@
 {
-  "job_id": "job_004",
-  "created_at": "2026-09-10T02:22:35.058778Z",
+  "job_id": "job_006",
+  "created_at": "2026-09-10T03:21:31.748390Z",
   "status": "created",
   "avatar_spec": {
     "schema_version": "1.0",
-    "age_band": "36-45",
+    "age_band": "25-30",
     "presentation": "casual",
-    "skin_tone": "light",
+    "skin_tone": "dark",
     "hair": {
-      "style": "medium length",
-      "color": "brown"
+      "style": "short",
+      "color": "black"
     },
     "attire": "casual shirt",
-    "background": "outdoor urban environment",
+    "background": "office",
     "pose": "three quarter portrait",
-    "geographic_context": null,
+    "geographic_context": "asian",
     "reference_images": []
   },
   "generation_spec": {
@@ -29,7 +29,7 @@
     "backend": "local"
   },
   "backend": "local",
-  "prompt": "A professional studio portrait of a fictional adult person, age 36-45, front-facing, natural expression, medium length brown hair, casual shirt, neutral professional background, realistic photography, soft studio lighting, high detail",
+  "prompt": "A professional studio portrait of a fictional adult person, age 25-30, front-facing, natural expression, short black hair, casual shirt, neutral professional background, realistic photography, soft studio lighting, high detail",
   "negative_prompt": "blurry, distorted face, deformed, extra fingers, extra limbs, low quality, duplicate person, text, watermark, logo",
   "output_path": null,
   "error_message": null
