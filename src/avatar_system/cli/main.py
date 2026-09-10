@@ -8,6 +8,8 @@ from avatar_system.generation.local import LocalGenerator
 from avatar_system.jobs.manager import JobManager
 from avatar_system.orchestration.generation import GenerationOrchestrator
 from avatar_system.generation.kaggle import KaggleGenerator
+from avatar_system.validation.validator import OutputValidator
+from avatar_system.evaluation.evaluator import AvatarEvaluator
 
 import typer
 from pydantic import ValidationError
@@ -158,18 +160,190 @@ def validate(
 
 
 @app.command()
+def validate(
+    job: Optional[str] = typer.Option(
+        None,
+        "--job",
+        "-j",
+        help="Generation job ID.",
+    ),
+):
+    """
+    Validate the generated output and provenance.
+    """
+
+    if job is None:
+        typer.echo(
+            "ERROR: --job is required."
+        )
+        raise typer.Exit(code=1)
+
+    manager = JobManager()
+
+    try:
+        generation_job = manager.load(job)
+
+    except FileNotFoundError as exc:
+        typer.echo(f"ERROR: {exc}")
+        raise typer.Exit(code=1)
+
+    validator = OutputValidator()
+
+    try:
+        result = validator.validate(
+            generation_job
+        )
+
+    except Exception as exc:
+        typer.echo(
+            f"ERROR: Validation failed: {exc}"
+        )
+        raise typer.Exit(code=1)
+
+    typer.echo("")
+    typer.echo("=" * 60)
+    typer.echo("OUTPUT VALIDATION")
+    typer.echo("=" * 60)
+
+    typer.echo(
+        f"Job ID: {result['job_id']}"
+    )
+
+    typer.echo(
+        f"Images: {result['image_count']}"
+    )
+
+    typer.echo(
+        f"Backend: {result['backend']}"
+    )
+
+    typer.echo(
+        f"Model: {result['model_name']}"
+    )
+
+    if result["valid"]:
+        typer.echo("")
+        typer.echo("VALIDATION PASSED.")
+    else:
+        typer.echo("")
+        typer.echo("VALIDATION FAILED.")
+
+    if result["warnings"]:
+        typer.echo("")
+        typer.echo("Warnings:")
+
+        for warning in result["warnings"]:
+            typer.echo(f"  - {warning}")
+
+    if result["errors"]:
+        typer.echo("")
+        typer.echo("Errors:")
+
+        for error in result["errors"]:
+            typer.echo(f"  - {error}")
+
+    if not result["valid"]:
+        raise typer.Exit(code=1)
+@app.command()
 def evaluate(
     job: Optional[str] = typer.Option(
         None,
         "--job",
         "-j",
-        help="Generation job ID or job path.",
+        help="Generation job ID.",
     ),
 ):
     """
     Evaluate generated avatar outputs.
     """
-    print("WORKING: evaluate")
+
+    if job is None:
+        typer.echo(
+            "ERROR: --job is required."
+        )
+        raise typer.Exit(code=1)
+
+    manager = JobManager()
+
+    try:
+        manager.load(job)
+
+    except FileNotFoundError as exc:
+        typer.echo(f"ERROR: {exc}")
+        raise typer.Exit(code=1)
+
+    evaluator = AvatarEvaluator()
+
+    try:
+        result = evaluator.evaluate(job)
+
+    except Exception as exc:
+        typer.echo(
+            f"ERROR: Evaluation failed: {exc}"
+        )
+        raise typer.Exit(code=1)
+
+    typer.echo("")
+    typer.echo("=" * 60)
+    typer.echo("AVATAR EVALUATION")
+    typer.echo("=" * 60)
+
+    typer.echo(
+        f"Job ID: {result['job_id']}"
+    )
+
+    typer.echo(
+        f"Backend: {result['backend']}"
+    )
+
+    typer.echo(
+        f"Model: {result['model_name']}"
+    )
+
+    typer.echo(
+        f"Images evaluated: "
+        f"{result['image_count']}"
+    )
+
+    typer.echo(
+        f"Average quality score: "
+        f"{result['average_quality_score']}/100"
+    )
+
+    typer.echo("")
+
+    for image in result["images"]:
+
+        typer.echo(
+            f"Image: {image['file']}"
+        )
+
+        typer.echo(
+            f"  Resolution: "
+            f"{image['width']}x{image['height']}"
+        )
+
+        typer.echo(
+            f"  File size: "
+            f"{image['file_size_bytes']} bytes"
+        )
+
+        typer.echo(
+            f"  Brightness: "
+            f"{image['mean_brightness']}"
+        )
+
+        typer.echo(
+            f"  Contrast: "
+            f"{image['contrast']}"
+        )
+
+        typer.echo(
+            f"  Quality score: "
+            f"{image['quality_score']}/100"
+        )
+
+        typer.echo("")
 
 
 @app.command()
