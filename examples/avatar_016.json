@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "age_band": "26-35",
+  "presentation": "professional",
+  "skin_tone": "light",
+  "hair": {
+    "style": "straight short",
+    "color": "dark brown"
+  },
+  "attire": "formal business suit",
+  "background": "modern professional office",
+  "pose": "front facing portrait",
+  "geographic_context": "Northern European",
+  "reference_images": []
+}

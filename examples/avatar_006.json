@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "age_band": "46-55",
+  "presentation": "professional",
+  "skin_tone": "light",
+  "hair": {
+    "style": "long straight",
+    "color": "dark brown"
+  },
+  "attire": "formal business attire",
+  "background": "neutral studio background",
+  "pose": "front facing portrait",
+  "geographic_context": null,
+  "reference_images": []
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "age_band": "36-45",
+  "presentation": "professional",
+  "skin_tone": "medium-dark",
+  "hair": {
+    "style": "curly short",
+    "color": "dark brown"
+  },
+  "attire": "formal business attire",
+  "background": "minimal professional studio",
+  "pose": "front facing portrait",
+  "geographic_context": "Latin American",
+  "reference_images": []
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "age_band": "26-35",
+  "presentation": "professional",
+  "skin_tone": "tan",
+  "hair": {
+    "style": "straight medium length",
+    "color": "black"
+  },
+  "attire": "modern business attire",
+  "background": "bright professional workspace",
+  "pose": "front facing portrait",
+  "geographic_context": "East Asian",
+  "reference_images": []
+}

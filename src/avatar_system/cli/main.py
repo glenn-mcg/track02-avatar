@@ -1,5 +1,7 @@
 import json
 from typing import Optional
+import time
+from pathlib import Path
 from avatar_system.jobs.manager import JobManager
 from avatar_system.schemas.generation import GenerationSpec
 from avatar_system.schemas.job import GenerationJob, JobBackend
@@ -144,19 +146,6 @@ def generate(
     typer.echo(f"Seed: {result.seed}")
     typer.echo(f"Output: {result.output_path}")
 
-@app.command()
-def validate(
-    job: Optional[str] = typer.Option(
-        None,
-        "--job",
-        "-j",
-        help="Generation job ID or job path.",
-    ),
-):
-    """
-    Validate the generated output and provenance.
-    """
-    print("WORKING: validate")
 
 
 @app.command()
@@ -344,7 +333,315 @@ def evaluate(
         )
 
         typer.echo("")
+@app.command()
+def benchmark(
+    job: Optional[str] = typer.Option(
+        None,
+        "--job",
+        "-j",
+        help="Generation job ID.",
+    ),
+):
+    """
+    Report benchmark and compute metrics for a completed generation job.
+    """
 
+    if job is None:
+        typer.echo("ERROR: --job is required.")
+        raise typer.Exit(code=1)
+
+    output_directory = (
+        Path("outputs")
+        / job
+        / "avatar-output"
+    )
+
+    result_file = output_directory / "result.json"
+
+    if not result_file.exists():
+        typer.echo(
+            f"ERROR: Benchmark result not found: {result_file}"
+        )
+        typer.echo(
+            "Run avatar generate --job <job_id> first."
+        )
+        raise typer.Exit(code=1)
+
+    try:
+        result = json.loads(
+            result_file.read_text(
+                encoding="utf-8"
+            )
+        )
+    except json.JSONDecodeError as exc:
+        typer.echo(
+            f"ERROR: Invalid result.json: {exc}"
+        )
+        raise typer.Exit(code=1)
+
+    if not result.get("success"):
+        typer.echo(
+            "ERROR: Generation was not successful."
+        )
+        typer.echo(
+            result.get(
+                "error_message",
+                "Unknown generation error.",
+            )
+        )
+        raise typer.Exit(code=1)
+
+    # --------------------------------------------------
+    # Basic information
+    # --------------------------------------------------
+
+    job_id = result.get("job_id", job)
+
+    model_name = result.get(
+        "model_name",
+        "unknown",
+    )
+
+    backend = result.get(
+        "backend",
+        "unknown",
+    )
+
+    seed = result.get("seed")
+
+    resolution = result.get(
+        "resolution",
+        "unknown",
+    )
+
+    steps = result.get("steps")
+
+    guidance_scale = result.get(
+        "guidance_scale"
+    )
+
+    # --------------------------------------------------
+    # Timing
+    # --------------------------------------------------
+
+    generation_started = result.get(
+        "generation_started"
+    )
+
+    generation_completed = result.get(
+        "generation_completed"
+    )
+
+    inference_seconds = result.get(
+        "inference_seconds"
+    )
+
+    # --------------------------------------------------
+    # Compute
+    # --------------------------------------------------
+
+    gpu_name = result.get(
+        "gpu_name",
+        "not recorded",
+    )
+
+    gpu_memory_allocated = result.get(
+        "gpu_memory_allocated_mb"
+    )
+
+    gpu_memory_peak = result.get(
+        "gpu_memory_peak_mb"
+    )
+
+    model_revision = result.get(
+        "model_revision",
+        model_name,
+    )
+
+    # --------------------------------------------------
+    # Output
+    # --------------------------------------------------
+
+    output_paths = result.get(
+        "output_paths",
+        [],
+    )
+
+    image_count = len(output_paths)
+
+    # --------------------------------------------------
+    # Display
+    # --------------------------------------------------
+
+    typer.echo("")
+    typer.echo("=" * 60)
+    typer.echo("AVATAR GENERATION BENCHMARK")
+    typer.echo("=" * 60)
+
+    typer.echo("")
+    typer.echo("JOB")
+    typer.echo("-" * 60)
+    typer.echo(f"Job ID: {job_id}")
+    typer.echo(f"Backend: {backend}")
+    typer.echo(f"Images: {image_count}")
+
+    typer.echo("")
+    typer.echo("MODEL")
+    typer.echo("-" * 60)
+    typer.echo(f"Model: {model_name}")
+    typer.echo(f"Revision: {model_revision}")
+
+    typer.echo("")
+    typer.echo("GENERATION")
+    typer.echo("-" * 60)
+    typer.echo(f"Resolution: {resolution}")
+    typer.echo(f"Steps: {steps}")
+    typer.echo(f"Guidance scale: {guidance_scale}")
+    typer.echo(f"Seed: {seed}")
+
+    typer.echo("")
+    typer.echo("TIMING")
+    typer.echo("-" * 60)
+
+    if generation_started:
+        typer.echo(
+            f"Generation started: {generation_started}"
+        )
+
+    if generation_completed:
+        typer.echo(
+            f"Generation completed: {generation_completed}"
+        )
+
+    if inference_seconds is not None:
+        typer.echo(
+            f"Inference time: "
+            f"{inference_seconds:.3f} seconds"
+        )
+
+        if image_count > 0:
+            typer.echo(
+                f"Time per image: "
+                f"{inference_seconds / image_count:.3f} seconds"
+            )
+
+    typer.echo("")
+    typer.echo("COMPUTE")
+    typer.echo("-" * 60)
+    typer.echo(f"GPU: {gpu_name}")
+
+    if gpu_memory_allocated is not None:
+        typer.echo(
+            f"GPU memory allocated: "
+            f"{gpu_memory_allocated:.2f} MB"
+        )
+    else:
+        typer.echo(
+            "GPU memory allocated: not recorded"
+        )
+
+    if gpu_memory_peak is not None:
+        typer.echo(
+            f"GPU peak memory: "
+            f"{gpu_memory_peak:.2f} MB"
+        )
+    else:
+        typer.echo(
+            "GPU peak memory: not recorded"
+        )
+
+    typer.echo("")
+    typer.echo("OUTPUT")
+    typer.echo("-" * 60)
+
+    for output_path in output_paths:
+        local_path = Path(output_path)
+
+        # The Kaggle path is inside result.json,
+        # so map it to our downloaded output directory.
+        local_filename = local_path.name
+
+        downloaded_path = (
+            output_directory
+            / local_filename
+        )
+
+        if downloaded_path.exists():
+            file_size = downloaded_path.stat().st_size
+
+            typer.echo(
+                f"Image: {downloaded_path}"
+            )
+
+            typer.echo(
+                f"File size: {file_size} bytes"
+            )
+        else:
+            typer.echo(
+                f"Image: {local_filename}"
+            )
+        # --------------------------------------------------
+    # Save benchmark report
+    # --------------------------------------------------
+
+    benchmark_data = {
+        "job_id": job_id,
+        "backend": backend,
+        "image_count": image_count,
+
+        "model": model_name,
+        "model_revision": model_revision,
+
+        "resolution": resolution,
+        "steps": steps,
+        "guidance_scale": guidance_scale,
+        "seed": seed,
+
+        "generation_started": generation_started,
+        "generation_completed": generation_completed,
+
+        "inference_seconds": inference_seconds,
+        "time_per_image_seconds": (
+            inference_seconds / image_count
+            if inference_seconds is not None and image_count > 0
+            else None
+        ),
+
+        "gpu_name": gpu_name,
+        "gpu_memory_allocated_mb": gpu_memory_allocated,
+        "gpu_memory_peak_mb": gpu_memory_peak,
+
+        "output_paths": output_paths,
+    }
+
+    benchmark_file = (
+        Path("outputs")
+        / job
+        / "benchmark.json"
+    )
+
+    benchmark_file.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    benchmark_file.write_text(
+        json.dumps(
+            benchmark_data,
+            indent=2,
+        ),
+        encoding="utf-8",
+    )
+
+    typer.echo("")
+    typer.echo(
+        f"Benchmark saved to: {benchmark_file}"
+    )
+
+    typer.echo("")
+    typer.echo("=" * 60)
+    typer.echo("BENCHMARK COMPLETE")
+    typer.echo("=" * 60)
 
 @app.command()
 def status(

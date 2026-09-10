@@ -1,0 +1,91 @@
+{
+  "matrix_name": "Six Avatar Geographic and Appearance Diversity Matrix",
+  "purpose": "Demonstrate materially different geographic and cultural appearance contexts while keeping nationality/geographic context separate from physical appearance attributes.",
+  "avatars": [
+     {
+      "avatar_id": "avatar_011",
+      "job_id": "job_009",
+      "seed": 101,
+      "age_band": "36-45",
+      "skin_tone": "medium-dark",
+      "hair": "curly short, dark brown",
+      "attire": "formal business attire",
+      "background": "minimal professional studio",
+      "pose": "front facing portrait",
+      "geographic_context": "Latin American"
+    }
+  
+    {
+      "avatar_id": "avatar_012",
+      "job_id": "job_010",
+      "seed": 202,
+      "age_band": "26-35",
+      "skin_tone": "medium",
+      "hair": "short, black",
+      "attire": "formal business attire",
+      "background": "professional office",
+      "pose": "front facing portrait",
+      "geographic_context": "South Asian"
+    },
+    {
+      "avatar_id": "avatar_013",
+      "job_id": "job_011",
+      "seed": 303,
+      "age_band": "36-45",
+      "skin_tone": "olive",
+      "hair": "wavy medium length, dark brown",
+      "attire": "business casual attire",
+      "background": "contemporary office",
+      "pose": "front facing portrait",
+      "geographic_context": "Mediterranean"
+    },
+    {
+      "avatar_id": "avatar_014",
+      "job_id": "job_012",
+      "seed": 42,
+      "age_band": "46-55",
+      "skin_tone": "deep brown",
+      "hair": "short curly, black",
+      "attire": "formal business suit",
+      "background": "executive office",
+      "pose": "front facing portrait",
+      "geographic_context": "West African"
+    },
+    {
+      "avatar_id": "avatar_015",
+      "job_id": "job_013",
+      "seed": 505,
+      "age_band": "26-35",
+      "skin_tone": "tan",
+      "hair": "straight medium length, black",
+      "attire": "modern business attire",
+      "background": "bright professional workspace",
+      "pose": "front facing portrait",
+      "geographic_context": "East Asian"
+    },
+      {
+      "avatar_id": "avatar_016",
+      "job_id": "job_014",
+      "seed": 606,
+      "age_band": "26-35",
+      "skin_tone": "light",
+      "hair": "straight short, dark brown",
+      "attire": "formal business suit",
+      "background": "modern professional office",
+      "pose": "front facing portrait",
+      "geographic_context": "Northern European"
+    }
+  ],
+  "controlled_attributes": [
+    "skin_tone",
+    "hair",
+    "attire",
+    "background"
+  ],
+  "design_notes": [
+    "Geographic context is represented independently from physical appearance attributes.",
+    "No nationality is used as a direct proxy for skin tone, hair, attire, or other physical characteristics.",
+    "All avatars are fictional adults.",
+    "Each generation uses an explicit deterministic seed."
+  ]
+}

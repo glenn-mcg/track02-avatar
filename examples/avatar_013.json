@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "age_band": "36-45",
+  "presentation": "professional",
+  "skin_tone": "olive",
+  "hair": {
+    "style": "wavy medium length",
+    "color": "dark brown"
+  },
+  "attire": "business casual attire",
+  "background": "contemporary office",
+  "pose": "front facing portrait",
+  "geographic_context": "Mediterranean",
+  "reference_images": []
+}

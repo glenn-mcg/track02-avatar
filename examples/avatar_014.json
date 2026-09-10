@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "age_band": "46-55",
+  "presentation": "professional",
+  "skin_tone": "deep brown",
+  "hair": {
+    "style": "short curly",
+    "color": "black"
+  },
+  "attire": "formal business suit",
+  "background": "executive office",
+  "pose": "front facing portrait",
+  "geographic_context": "West African",
+  "reference_images": []
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "age_band": "25-30",
+  "presentation": "proffesional",
+  "skin_tone": "medium",
+  "hair": {
+    "style": "short",
+    "color": "black"
+  },
+  "attire": "formal proffessional attire",
+  "background": "office",
+  "pose": "three quarter portrait",
+  "geographic_context": "indian",
+  "reference_images": []
+}

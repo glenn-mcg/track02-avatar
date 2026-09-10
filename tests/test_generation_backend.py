@@ -1,7 +1,8 @@
+import torch
+
 from avatar_system.generation.local import LocalGenerator
 from avatar_system.schemas.avatar import AvatarSpec
-from avatar_system.schemas.generation import GenerationSpec
-from avatar_system.schemas.job import GenerationJob
+from avatar_system.schemas.job import GenerationJob, GenerationSpec
 
 
 def test_local_generator():
@@ -32,6 +33,12 @@ def test_local_generator():
 
     result = generator.generate(job)
 
-    assert result.success is True
-    assert result.seed == 12345
-    assert result.backend == "local"
+    if torch.cuda.is_available():
+        assert result.success is True
+        assert result.backend == "local"
+        assert result.seed == 12345
+    else:
+        assert result.success is False
+        assert result.backend == "local"
+        assert result.seed == 12345
+        assert "No CUDA GPU detected" in result.error_message

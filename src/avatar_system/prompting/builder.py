@@ -20,6 +20,11 @@ class PromptBuilder:
             "high detail",
         ]
 
+        if spec.geographic_context:
+            parts.append(
+                f"geographic context: {spec.geographic_context},"
+            )
+
         return " ".join(parts)
 
     def build_negative_prompt(self, spec: AvatarSpec) -> str:
