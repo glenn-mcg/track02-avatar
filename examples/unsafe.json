@@ -1,0 +1,15 @@
+{
+  "schema_version": "1.0",
+  "age_band": "26-35",
+  "presentation": "professional",
+  "skin_tone": "medium",
+  "hair": {
+    "style": "short",
+    "color": "black"
+  },
+  "attire": "nude",
+  "background": "professional office",
+  "pose": "front facing portrait",
+  "geographic_context": null,
+  "reference_images": []
+}

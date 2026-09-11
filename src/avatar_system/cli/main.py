@@ -72,7 +72,7 @@ def prepare(
         job_id=job_id,
         avatar_spec=avatar_spec,
         generation_spec=generation_spec,
-        backend=JobBackend.LOCAL,
+        backend=JobBackend.KAGGLE,
     )
     orchestrator = Orchestrator()
 

@@ -7,7 +7,7 @@ def test_generation_spec_defaults():
     assert spec.width == 1024
     assert spec.height == 1024
     assert spec.steps == 30
-    assert spec.backend == "local"
+    assert spec.backend == "kaggle"
 
 
 def test_generation_spec_custom_values():

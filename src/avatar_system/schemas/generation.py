@@ -54,6 +54,6 @@ class GenerationSpec(BaseModel):
     negative_prompt: str = ""
 
     backend: str = Field(
-        default="local",
+        default="kaggle",
         min_length=1,
     )

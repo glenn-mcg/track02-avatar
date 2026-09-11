@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "skin_tone": "unspecified",
+  "hair": {
+    "style": "unspecified",
+    "color": "unspecified"
+  },
+  "attire": "appropriate attire",
+  "background": "professional setting",
+  "pose": "portrait",
+  "geographic_context": null,
+  "reference_images": []
+}
